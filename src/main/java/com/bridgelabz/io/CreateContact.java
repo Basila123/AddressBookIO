@@ -2,75 +2,107 @@ package com.bridgelabz.io;
 
 import java.util.Scanner;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
 /**
- * Instance variables are initialized in their particular methods
+ * Template class for creating a contact
  */
-public class CreateContact {
-    String firstName, lastName, address, city, state, emailId, phoneNumber, zipcode;
-    public void setFirstName(String firstName){
+class ContactInfo {
+    String firstName, lastName, address, city, state, zipcode, phoneNo, email;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    public void setLastName(String lastName){
+
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public void setAddress(String address){
+
+    public void setAddress(String address) {
         this.address = address;
     }
-    public void setCity(String city){
+
+    public void setCity(String city) {
         this.city = city;
     }
-    public void setState(String state){
+
+    public void setState(String state) {
         this.state = state;
     }
-    public void setEmailId(String emailId){
-        this.emailId = emailId;
-    }
-    public void setPhoneNumber(String phoneNumber){
-        this.phoneNumber = phoneNumber;
-    }
-    public void setZipcode(String zipcode){
+
+    public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
 
-    /**
-     * show method is used to display the details filled
-     * instance variables are used to display
-     */
-    public void show(){
-        System.out.println("First name : " + firstName);
-        System.out.println("last name : " +lastName);
-        System.out.println("Address : " +address);
-        System.out.println("City : " +city);
-        System.out.println("State : " +state);
-        System.out.println("Email Id : " +emailId);
-        System.out.println("Phone number : " +phoneNumber);
-        System.out.println("Zipcode : "+zipcode);
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
 
-    public String showCityOrState(){
-        return city+" "+state;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
-     * This method takes input from console
-     * @param sc input from user are set to their instance variables using respective methods
+     * Method to save contact details
      */
-    public void createContact(Scanner sc) {
-        System.out.print("Enter First Name: ");
+    public void setContactInfo() {
+
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter First Name: \n Last Name: \n Address: \n City: \n State: \n Zipcode: \n PhoneNO: \n Email: \n");
         setFirstName(sc.nextLine());
-        System.out.print("Enter Last Name: ");
         setLastName(sc.nextLine());
-        System.out.print("Enter Address: ");
         setAddress(sc.nextLine());
-        System.out.print("Enter City: ");
         setCity(sc.nextLine());
-        System.out.print("Enter state: ");
         setState(sc.nextLine());
-        System.out.print("Enter Email Id: ");
-        setEmailId(sc.nextLine());
-        System.out.print("Enter Phone number: ");
-        setPhoneNumber(sc.nextLine());
-        System.out.print("Enter zipcode: ");
         setZipcode(sc.nextLine());
+        setPhoneNo(sc.nextLine());
+        setEmail(sc.nextLine());
+    }
+
+    /**
+     * Method to display the contact details
+     */
+    public void displayContactInfo() {
+        System.out.print(" First Name: " + firstName + "\n Last Name: " + lastName + "\n Address: " + address +
+                "\n City: " + city + "\n State: " + state + "\n Zipcode: " + zipcode + "\n PhoneNO: " + phoneNo + "\n Email: " + email + "\n");
+    }
+
+    public String showContact() {
+        return " First Name: " + firstName + "\n Last Name: " + lastName + "\n Address: " + address +
+                "\n City: " + city + "\n State: " + state + "\n Zipcode: " + zipcode + "\n PhoneNO: " + phoneNo + "\n Email: " + email + "\n";
     }
 }
