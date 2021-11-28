@@ -1,186 +1,160 @@
 package com.bridgelabz.io;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
-public class AddressBook {
-    static String name;
-    static boolean is_Running = false;
-    public HashMap<String, ContactInfo> addressBook;
-
+public class AddressBook extends CreateContact{
+    HashMap<String, CreateContact> contacts;
+    HashMap<String, AddressBook> addressBook =new HashMap<>();
+    /**
+     * constructor used for initializing hashmap
+     */
     public AddressBook() {
-        addressBook = new HashMap<>();
-    }
-
-    //Driver code
-    public static void main(String[] args) {
-        System.out.println("Welcome to the ADDRESS BOOK");
-
-        HashMap<String, AddressBook> multiAdressBook = new HashMap<>();
-        AddressBook addressBookObj1 = new AddressBook();
-        AddressBook addressBookObj2 = new AddressBook();
-        AddressBook addressBookObj3 = new AddressBook();
-        multiAdressBook.put("AB1", addressBookObj1);
-        multiAdressBook.put("AB2", addressBookObj2);
-        multiAdressBook.put("AB3", addressBookObj3);
-
-        while (!is_Running) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter 1 ,2 ,3 for diff addressBook and 4 to exit");
-            int option = scanner.nextInt();
-            String key = null;
-            switch (option) {
-                case 1:
-                    key = "AB1";
-                    break;
-                case 2:
-                    key = "AB2";
-                    break;
-                case 3:
-                    key = "AB3";
-                    break;
-            }
-            if (option == 4) break;
-            System.out.println(" Enter 1 to create a new contact \n 2 to exit \n 3 to edit existing contact \n 4 to delete an existing contact");
-            int choice = scanner.nextInt();
-            if (choice == 1) {
-                ContactInfo contact = new ContactInfo();
-                contact.setContactInfo();
-                name = contact.firstName.toUpperCase(Locale.ROOT) + " " + contact.lastName.toUpperCase(Locale.ROOT);
-                if (multiAdressBook.get(key).addressBook.keySet().stream().noneMatch(k -> k.equals(name))){                 //JAVA STREAMS is used to check if any duplicate
-                    multiAdressBook.get(key).addressBook.put(name, contact);                                                // contact already exist in the addressBook
-                    multiAdressBook.get(key).addressBook.get(name).displayContactInfo();
-                }
-                else System.out.println("Contact already exist duplicate not allowed");
-            } else if (choice == 2) {
-                is_Running = true;
-            } else if (choice == 3) {
-                multiAdressBook.get(key).editContact();
-            } else if (choice == 4) {
-                multiAdressBook.get(key).deleteContact();
-            }
-        }
+        contacts = new HashMap<>();
     }
 
     /**
-     * Method to delete an existing contact
+     * key value pairs of hashmap are assigned
+     * @param contact which is of CreateContact type
      */
-    public void deleteContact() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the first and last name of the contact you want to delete from AddressBook: ");
-        String name = scanner.nextLine().toUpperCase(Locale.ROOT);
-        if (addressBook.containsKey(name)) {
-            addressBook.remove(name);
-            System.out.println("Contact removed");
-        } else
-            System.out.println("Contact not found");
+    public void addContact(CreateContact contact) {
+        contacts.put(contact.firstName + " " + contact.lastName, contact);
     }
 
     /**
-     * Method to edit an existing contact
+     * This method displays the contact details if the contact exist in address book
      */
-    public void editContact() {
+    public void displayContact() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter your first name and Last name  : ");
-        String name = sc.nextLine().toUpperCase(Locale.ROOT);
-        if (addressBook.containsKey(name)) {
-            System.out.println("Enter the number you want to edit\n1.Address\n2.City\n3.State\n4.Zipcode\n5.Phone Number\n6.Email");
+        System.out.print("Enter your first name and last name with space : ");
+        String name = sc.nextLine();
+        if (contacts.containsKey(name)) {
+            show();
+        } else System.out.println("Record not present");
+    }
+
+    /**
+     * This method allows user to edit details with help of name
+     * Switch case used for edit only particular detail and set new value
+     */
+    public void setEdit() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter your name : ");
+        String name = sc.nextLine();
+        if (contacts.containsKey(name)) {
+            System.out.println("Enter a number you want to edit\n1.Address\n2.City\n3.State\n4.EmailId\n5.Phone Number\n6.Zipcode");
             int number = sc.nextInt();
             sc.nextLine();
             switch (number) {
                 case 1 -> {
                     System.out.println("Enter new Address");
-                    addressBook.get(name).setAddress(sc.nextLine());
+                    contacts.get(name).setAddress(sc.nextLine());
                 }
                 case 2 -> {
                     System.out.println("Enter new City");
-                    addressBook.get(name).setCity(sc.nextLine());
+                    contacts.get(name).setCity(sc.nextLine());
                 }
                 case 3 -> {
                     System.out.println("Enter new State");
-                    addressBook.get(name).setState(sc.nextLine());
+                    contacts.get(name).setState(sc.nextLine());
                 }
                 case 4 -> {
-                    System.out.println("Enter new ZipCode");
-                    addressBook.get(name).setZipcode(sc.nextLine());
+                    System.out.println("Enter new EmailId");
+                    contacts.get(name).setEmailId(sc.nextLine());
                 }
                 case 5 -> {
                     System.out.println("Enter new Phone number");
-                    addressBook.get(name).setPhoneNo(sc.nextLine());
+                    contacts.get(name).setPhoneNumber(sc.nextLine());
                 }
                 case 6 -> {
-                    System.out.println("Enter new Email");
-                    addressBook.get(name).setEmail(sc.nextLine());
+                    System.out.println("Enter new Zipcode");
+                    contacts.get(name).setZipcode(sc.nextLine());
                 }
                 default -> System.out.println("Please input a valid number (1-6)");
             }
-            addressBook.get(name).displayContactInfo();
-        } else System.out.println("Contact not found");
-    }
-}
-
-/**
- * Template class for creating a contact
- */
-class ContactInfo {
-    String firstName, lastName, address, city, state, zipcode, phoneNo, email;
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        } else System.out.println("Record not found");
     }
 
     /**
-     * Method to save contact details
+     * This method deletes the contact using name of the contact
+     * hashmap remove method is used to remove the key
      */
-    public void setContactInfo() {
-
+    public void deleteContact() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter First Name: \n Last Name: \n Address: \n City: \n State: \n Zipcode: \n PhoneNO: \n Email: \n");
-        setFirstName(sc.nextLine());
-        setLastName(sc.nextLine());
-        setAddress(sc.nextLine());
-        setCity(sc.nextLine());
-        setState(sc.nextLine());
-        setZipcode(sc.nextLine());
-        setPhoneNo(sc.nextLine());
-        setEmail(sc.nextLine());
+        System.out.print("Enter your name : ");
+        String name = sc.nextLine();
+        if (contacts.containsKey(name)) {
+            contacts.remove(name);
+            System.out.println("Contact deleted");
+        } else System.out.println("Record not found");
     }
 
-    /**
-     * Method to display the contact details
-     */
-    public void displayContactInfo() {
-        System.out.print(" First Name: " + firstName + "\n Last Name: " + lastName + "\n Address: " + address +
-                "\n City: " + city + "\n State: " + state + "\n Zipcode: " + zipcode + "\n PhoneNO: " + phoneNo + "\n Email: " + email + "\n");
+    public void searchContact(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the city name to be searched : ");
+        String cityName = sc.nextLine();
+        for(Map.Entry<String,AddressBook> ab : addressBook.entrySet()){
+            AddressBook addressBookValue = ab.getValue();
+            for (Map.Entry<String,CreateContact> c : addressBookValue.contacts.entrySet()) {
+                String res = addressBookValue.contacts.get(c.getKey()).showCityOrState();
+                if(res.contains(cityName)){
+                    System.out.println(c.getKey());
+                }
+            }
+        }
     }
 
+    public static void main(String[] args) {
+        System.out.println("=========================");
+        System.out.println("Welcome to Address Book");
+        System.out.println("=========================");
+        Scanner sc = new Scanner(System.in);
+        boolean exit = false;
+        AddressBook addressBookObj = new AddressBook();
+        AddressBook addressBook1 = new AddressBook();
+        AddressBook addressBook2 = new AddressBook();
+        AddressBook addressBook3 = new AddressBook();
+        addressBookObj.addressBook.put("Address Book 1",addressBook1);
+        addressBookObj.addressBook.put("Address Book 2",addressBook2);
+        addressBookObj.addressBook.put("Address Book 3",addressBook3);
+        while (!exit) {
+            System.out.println("Press\n1.Address Book 1\n2.Address Book 2\n3.Address Book 3\n4.Search Persons by City\n5.Exit");
+            int choose = sc.nextInt();
+            String key = null;
+            if(choose==1){
+                key = "Address Book 1";
+            }else if(choose==2){
+                key = "Address Book 2";
+            }else if(choose==3) {
+                key = "Address Book 3";
+            }else if(choose==4){
+                addressBookObj.searchContact();
+            }else break;
+            System.out.println("Press\n1.To Create Contact\n2.Display Contact\n3.Edit Contact\n4.Delete contact\n5.To Exit");
+            int option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
+                case 1 -> {
+                    CreateContact contact = new CreateContact();
+                    contact.createContact(sc);
+                    String name = contact.firstName + " " + contact.lastName;
+                    // Java stream operation is used to check for duplication
+                    // if true else condition works , if false creates new contact in that particular address book
+                    if(addressBookObj.addressBook.get(key).contacts.keySet().stream().noneMatch(match -> match.equals(name))) {
+                        addressBookObj.addressBook.get(key).addContact(contact);
+                    }else System.out.println("Duplicate contact already exist");
+                }
+                case 2 -> {
+                    addressBookObj.addressBook.get(key).displayContact();
+                }
+                case 3 -> {
+                    addressBookObj.addressBook.get(key).setEdit();
+                }
+                case 4 -> {
+                    addressBookObj.addressBook.get(key).deleteContact();
+                }
+                default -> {
+                    exit = true;
+                }
+            }
+        }
+    }
 }
