@@ -1,4 +1,5 @@
 package com.bridgelabz.io;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Scanner;
@@ -6,7 +7,7 @@ import java.util.Scanner;
 public class AddressBook {
     static String name;
     static boolean is_Running = false;
-    HashMap<String, ContactInfo> addressBook;
+    public HashMap<String, ContactInfo> addressBook;
 
     public AddressBook() {
         addressBook = new HashMap<>();
@@ -47,8 +48,11 @@ public class AddressBook {
                 ContactInfo contact = new ContactInfo();
                 contact.setContactInfo();
                 name = contact.firstName.toUpperCase(Locale.ROOT) + " " + contact.lastName.toUpperCase(Locale.ROOT);
-                multiAdressBook.get(key).addressBook.put(name, contact);
-                multiAdressBook.get(key).addressBook.get(name).displayContactInfo();
+                if (multiAdressBook.get(key).addressBook.keySet().stream().noneMatch(k -> k.equals(name))){                 //JAVA STREAMS is used to check if any duplicate
+                    multiAdressBook.get(key).addressBook.put(name, contact);                                                // contact already exist in the addressBook
+                    multiAdressBook.get(key).addressBook.get(name).displayContactInfo();
+                }
+                else System.out.println("Contact already exist duplicate not allowed");
             } else if (choice == 2) {
                 is_Running = true;
             } else if (choice == 3) {
@@ -178,4 +182,5 @@ class ContactInfo {
         System.out.print(" First Name: " + firstName + "\n Last Name: " + lastName + "\n Address: " + address +
                 "\n City: " + city + "\n State: " + state + "\n Zipcode: " + zipcode + "\n PhoneNO: " + phoneNo + "\n Email: " + email + "\n");
     }
+
 }
